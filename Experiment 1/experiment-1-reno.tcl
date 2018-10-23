@@ -1,8 +1,13 @@
 #Create a simulator object
 set ns [new Simulator]
 
+set bitrate [lindex $argv 0]
+
 #Open the trace file (before you start the experiment!)
-set tf [open experiment-1-tahoe_output.tr w]
+set filename "tracefiles/reno/experiment-1-reno_output_"
+append filename $bitrate ".tr"
+puts "trace file = $filename"
+set tf [open $filename w]
 $ns trace-all $tf
 
 #Define a 'finish' procedure
@@ -32,7 +37,7 @@ $ns queue-limit $n2 $n3 10
 
 
 #Setup a TCP connection
-set tcp [new Agent/TCP]
+set tcp [new Agent/TCP/Reno]
 $ns attach-agent $n1 $tcp
 set sink [new Agent/TCPSink]
 $ns attach-agent $n4 $sink
@@ -65,14 +70,14 @@ $cbr set random_ false
 #Schedule events for the CBR and FTP agents
 $ns at 0.1 "$cbr start"
 $ns at 1.0 "$ftp start"
-$ns at 4.0 "$ftp stop"
-$ns at 4.5 "$cbr stop"
+$ns at 9.0 "$ftp stop"
+$ns at 9.5 "$cbr stop"
 
 #Detach tcp and sink agents (not really necessary)
-$ns at 4.5 "$ns detach-agent $n1 $tcp ; $ns detach-agent $n4 $sink"
+$ns at 9.5 "$ns detach-agent $n1 $tcp ; $ns detach-agent $n4 $sink"
 
 #Call the finish procedure after 5 seconds of simulation time
-$ns at 5.0 "finish"
+$ns at 10.0 "finish"
 
 #Print CBR packet size and interval
 puts "CBR flow rate = [$cbr set rate_]"
