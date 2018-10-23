@@ -2,7 +2,7 @@
 set ns [new Simulator]
 
 #Open the trace file (before you start the experiment!)
-set tf [open experiment-1_output.tr w]
+set tf [open experiment-1-tahoe_output.tr w]
 $ns trace-all $tf
 
 #Define a 'finish' procedure
