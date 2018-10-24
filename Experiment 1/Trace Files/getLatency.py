@@ -37,10 +37,7 @@ PKT_ID      = 11
 
 outputs = [output for output in args.tracefile.read().splitlines()]
 
-# Has to be stored in tuple of (packetId, latency) to keep track of and remove dropped packets
-latencies = []
-
-# Goes through events
+# Gets the last output because time is measured as "time elapsed"
 event = re.split('\s', outputs[-1])
 time = float(event[TIME])
 # packet ID is autoincremented in the trace file from zero, making the number of packets the ID + 1
