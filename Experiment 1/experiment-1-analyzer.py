@@ -162,5 +162,5 @@ for key in data:
         gp.write(", \\\n")
     else:
         gp.write("\n")
-gp.write("pause -1")
+gp.close()
 print "Done!"

@@ -64,7 +64,7 @@ $cbr attach-agent $udp
 $cbr set type_ CBR
 $cbr set packet_size_ 1000
 $cbr set rate_ [append bitrate "Mb"]
-$cbr set random_ false
+$cbr set random_ true
 
 
 #Schedule events for the CBR and FTP agents
