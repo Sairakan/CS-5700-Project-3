@@ -41,18 +41,11 @@ outputs = [output for output in args.tracefile.read().splitlines()]
 latencies = []
 
 # Goes through events
-for line in outputs:
-    event = re.split('\s', line)
+event = re.split('\s', outputs[-1])
+time = float(event[TIME])
+# packet ID is autoincremented in the trace file from zero, making the number of packets the ID + 1
+numPackets = int(event[PKT_ID]) + 1
 
-    if event[EVENT] == 'd':
-        for latency in latencies:
-            if latency[0] == event[PKT_ID]:
-                latencies.remove(latency)
-    else:
-        time = float(event[TIME])
-        latencies.append((event[PKT_ID], time))
-
-latencySum = sum(latency[1] for latency in latencies)
-
-avgLatency = latencySum / len(latencies)
-print avgLatency
+# Round trip time, in milliseconds
+latency = time / numPackets * 2 * 1000
+print latency
