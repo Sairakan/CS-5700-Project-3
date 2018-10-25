@@ -22,12 +22,24 @@ SEQ_NUM     = 10
 PKT_ID      = 11
 
 outputs = [output for output in args.tracefile.read().splitlines()]
-dropCount = 0
-# Goes through output
+f1DropCount = 0
+f2DropCount = 0
+f3DropCount = 0
+
+# Goes through outputs
 for output in outputs:
     event = re.split('\s', output)
+
     # Collects dropped packet count
     if event[EVENT] == 'd':
-        dropCount += 1
+        if event[FLOW_ID] == '1':
+            f1DropCount += 1
+        elif event[FLOW_ID] == '2':
+            f2DropCount += 1
+        elif event[FLOW_ID] == '3':
+            f3DropCount += 1
+        else:
+            print "There are more than the allowed number of flows for experiment 2."
+            exit()
 
-print dropCount
+print f1DropCount, f2DropCount, f3DropCount

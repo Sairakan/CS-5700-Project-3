@@ -24,7 +24,6 @@ PKT_ID      = 11
 outputs = [output for output in args.tracefile.read().splitlines()]
 packetSizeSum = 0
 timeSum = 0.0
-# Goes through events to gather bandwidths in list
 
 i = 0
 while i < len(outputs):
