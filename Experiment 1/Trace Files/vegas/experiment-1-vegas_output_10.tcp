@@ -1,0 +1,16 @@
+time: 0.00000  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: -1   hiack: -1   seqno: 0    cwnd: 1.000  ssthresh: 20  dupacks: 0  rtt: 0.000  srtt: 0.000  rttvar: 12.000 bkoff: 1
+time: 1.12690  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 1    hiack: 0    seqno: 2    cwnd: 2.000  ssthresh: 20  dupacks: 0  rtt: 0.060  srtt: 0.060  rttvar: 0.030  bkoff: 1
+time: 1.12690  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 1    hiack: 1    seqno: 2    cwnd: 3.000  ssthresh: 20  dupacks: 0  rtt: 0.060  srtt: 0.060  rttvar: 0.022  bkoff: 1
+time: 1.25890  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 7    hiack: 5    seqno: 8    cwnd: 4.000  ssthresh: 20  dupacks: 0  rtt: 0.060  srtt: 0.060  rttvar: 0.015  bkoff: 1
+time: 1.26130  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 9    hiack: 6    seqno: 10   cwnd: 5.000  ssthresh: 20  dupacks: 0  rtt: 0.060  srtt: 0.060  rttvar: 0.015  bkoff: 1
+time: 1.26370  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 11   hiack: 7    seqno: 12   cwnd: 6.000  ssthresh: 20  dupacks: 0  rtt: 0.060  srtt: 0.060  rttvar: 0.015  bkoff: 1
+time: 1.52850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 1.000  ssthresh: 3   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 2
+time: 1.52850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 2.000  ssthresh: 3   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 2
+time: 1.92850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 1.000  ssthresh: 1   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 4
+time: 1.92850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 2.000  ssthresh: 2   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 4
+time: 2.72850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 1.000  ssthresh: 1   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 8
+time: 2.72850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 2.000  ssthresh: 2   dupacks: 0  rtt: 0.070  srtt: 0.060  rttvar: 0.015  bkoff: 8
+time: 4.32850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 1.000  ssthresh: 1   dupacks: 0  rtt: 0.070  srtt: 0.000  rttvar: 0.030  bkoff: 16
+time: 4.32850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 2.000  ssthresh: 2   dupacks: 0  rtt: 0.070  srtt: 0.000  rttvar: 0.030  bkoff: 16
+time: 7.52850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 1.000  ssthresh: 1   dupacks: 0  rtt: 0.070  srtt: 0.000  rttvar: 0.030  bkoff: 32
+time: 7.52850  saddr: 0  sport: 0  daddr: 3  dport: 0  maxseq: 14   hiack: 8    seqno: 9    cwnd: 2.000  ssthresh: 2   dupacks: 0  rtt: 0.070  srtt: 0.000  rttvar: 0.030  bkoff: 32

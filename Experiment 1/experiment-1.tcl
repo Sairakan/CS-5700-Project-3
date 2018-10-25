@@ -13,6 +13,7 @@ $ns trace-all $tf
 
 set tcpname ""
 append tcpname "tracefiles/" $tcpclass "/experiment-1-" $tcpclass "_output_" $bitrate ".tcp"
+puts "tcp file = $tcpname"
 set tcpfile [open $tcpname w]
 Agent/TCP set trace_all_oneline_ true
 
@@ -44,7 +45,16 @@ $ns queue-limit $n2 $n3 10
 
 
 #Setup a TCP connection
-set tcp [new Agent/TCP]
+set tcp [
+	if {$tcpclass eq "tahoe"} {
+		new Agent/TCP
+	} elseif {$tcpclass eq "reno"} {
+		new Agent/TCP/Reno
+	} elseif {$tcpclass eq "newreno"} {
+		new Agent/TCP/Newreno
+	} else {
+		new Agent/TCP/Vegas
+	}]
 $ns attach-agent $n1 $tcp
 set sink [new Agent/TCPSink]
 $ns attach-agent $n4 $sink
@@ -87,9 +97,6 @@ $ns at 9.5 "$ns detach-agent $n1 $tcp ; $ns detach-agent $n4 $sink"
 
 #Call the finish procedure after 5 seconds of simulation time
 $ns at 10.0 "finish"
-
-#Print CBR packet size and interval
-puts "CBR flow rate = [$cbr set rate_]"
 
 #Run the simulation
 $ns run
