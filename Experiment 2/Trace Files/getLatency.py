@@ -29,9 +29,6 @@ outputs = [output for output in args.tracefile.read().splitlines()]
 f1SumTime = 0.0
 f2SumTime = 0.0
 f3SumTime = 0.0
-f1DroppedPackets = 0
-f2DroppedPackets = 0
-f3DroppedPackets = 0
 
 # To get number of packets, separated by flow
 f1PacketCount = 0
@@ -60,22 +57,15 @@ while i < len(outputs):
     event = re.split('\s', outputs[i])
 
     if (event[FLOW_ID] == '1'):
-        # Don't count dropped packets to account for round trip time
-        if (event[EVENT] == 'd'):
-            f1DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
+        if (event[EVENT] == 'r'):
             f1SumTime += getTime(event)
             f1PacketCount += 1
     elif (event[FLOW_ID] == '2'):
-        if (event[EVENT] == 'd'):
-            f2DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
+        if (event[EVENT] == 'r'):
             f2SumTime += getTime(event)
             f2PacketCount += 1
     elif (event[FLOW_ID] == '3'):
-        if (event[EVENT] == 'd'):
-            f3DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
+        if (event[EVENT] == 'r'):
             f3SumTime += getTime(event)
             f3PacketCount += 1
     else:
