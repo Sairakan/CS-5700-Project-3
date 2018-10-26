@@ -119,7 +119,7 @@ $ns at 9.0 "$ftp2 stop"
 $ns at 9.5 "$cbr stop"
 
 #Detach tcp and sink agents (not really necessary)
-$ns at 9.5 "$ns detach-agent $n1 $tcp1 ; $ns detach-agent $n4 $sink1 ; $ns detach-agent $n1 $tcp2 ; $ns detach-agent $n4 $sink2"
+$ns at 9.5 "$ns detach-agent $n1 $tcp1 ; $ns detach-agent $n4 $sink1 ; $ns detach-agent $n5 $tcp2 ; $ns detach-agent $n6 $sink2"
 
 #Call the finish procedure after 5 seconds of simulation time
 $ns at 10.0 "finish"
