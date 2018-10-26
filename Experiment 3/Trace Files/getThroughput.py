@@ -57,7 +57,7 @@ while (i < 10):
     firstIteration[i] = True
     i += 0.5
 previousInterval = 0
-print firstIteration
+
 i = 0
 while i < len(outputs):
     eventCheck = re.split('\s', outputs[i])
@@ -89,16 +89,19 @@ while i < len(outputs):
                 k +=1
             # Each throughput in a list, in Kbps
             if tcpIntervalSumTime != 0:
-                tcpThroughput.append((float(eventCheck[TIME]), tcpIntervalSumPacketSize/tcpIntervalSumTime*8/1000))
+                tcpThroughput.append(tcpIntervalSumPacketSize/tcpIntervalSumTime*8/1000)
 
             # Check that time isn't zero so that it doesn't get the first seconds where only TCP runs
             if cbrIntervalSumTime != 0:
-                cbrThroughput.append((float(eventCheck[TIME]), cbrIntervalSumPacketSize/cbrIntervalSumTime*8/1000))
+                cbrThroughput.append(cbrIntervalSumPacketSize/cbrIntervalSumTime*8/1000)
 
             previousInterval = i
             firstIteration[index] = False
     i += 1
 
 # Printed in order of flow. TCP then CBR
-print tcpThroughput
-print cbrThroughput
+for t in tcpThroughput:
+    print t
+print "\n\n"
+for t in cbrThroughput:
+    print t
