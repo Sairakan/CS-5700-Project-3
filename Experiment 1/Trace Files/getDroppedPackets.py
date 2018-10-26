@@ -26,8 +26,8 @@ dropCount = 0
 # Goes through output
 for output in outputs:
     event = re.split('\s', output)
-    # Collects dropped packet count
-    if event[EVENT] == 'd':
+    # Collects dropped packet count on tcp flow
+    if event[EVENT] == 'd' and event[FLOW_ID] == '2':
         dropCount += 1
 
 print dropCount
