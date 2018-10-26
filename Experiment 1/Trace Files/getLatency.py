@@ -29,33 +29,35 @@ i = 0
 
 sumTime = 0.0
 droppedPackets = 0
+numPackets = 0
 
 while i < len(outputs):
     event = re.split('\s', outputs[i])
 
-    # Don't count dropped packets to account for round trip time
-    if (event[EVENT] == 'd'):
-        droppedPackets += 1
+    # Only count tcp flow
+    if (event[FLOW_ID] == '1'):
+        # Don't count dropped packets to account for round trip time
+        if (event[EVENT] == 'd'):
+            droppedPackets += 1
 
-    if (event[EVENT] == 'r'):
-        packetId = event[PKT_ID]
-        receiveTime = float(event[TIME])
-        sendTime = 0.0
+        elif (event[EVENT] == 'r'):
+            numPackets += 1
+            packetId = event[PKT_ID]
+            receiveTime = float(event[TIME])
+            sendTime = 0.0
 
-        # Uses nested loop to get total time for all packets
-        # This is necessary because multiple packets' sending and receiving times overlap with one another
-        j = i
-        while j > 0:
-            pastEvent = re.split('\s', outputs[j])
-            if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
-                    sendTime = float(pastEvent[TIME])
-                    break
-            j -= 1
-        time = receiveTime - sendTime
-        sumTime += time
+            # Uses nested loop to get total time for all packets
+            # This is necessary because multiple packets' sending and receiving times overlap with one another
+            j = i
+            while j > 0:
+                pastEvent = re.split('\s', outputs[j])
+                if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+                        sendTime = float(pastEvent[TIME])
+                        break
+                j -= 1
+            time = receiveTime - sendTime
+            sumTime += time
     i += 1
-
-numPackets = int(re.split('\s', outputs[-1])[PKT_ID]) + 1 - droppedPackets
 # Round trip time, in milliseconds
 latency = sumTime / numPackets * 2 * 1000
 print latency

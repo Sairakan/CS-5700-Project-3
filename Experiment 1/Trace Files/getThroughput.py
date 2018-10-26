@@ -28,7 +28,7 @@ timeSum = 0.0
 i = 0
 while i < len(outputs):
     event = re.split('\s', outputs[i])
-    if (event[EVENT] == 'r'):
+    if (event[EVENT] == 'r' and event[FLOW_ID] == '1'):
         # Gets sum of packet size for throughput calculation later
         packetSize = float(event[PKT_SIZE])
         packetSizeSum += packetSize
