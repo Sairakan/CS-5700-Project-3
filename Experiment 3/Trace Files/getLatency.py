@@ -25,27 +25,29 @@ PKT_ID      = 11
 
 outputs = [output for output in args.tracefile.read().splitlines()]
 
-# Latency must now be separated by flow
-f1SumTime = 0.0
-f2SumTime = 0.0
-f3SumTime = 0.0
-f1DroppedPackets = 0
-f2DroppedPackets = 0
-f3DroppedPackets = 0
+# Distinguishes between flows. Now must be kept in list of throughputs per half-second interval
+tcpLatency = []
+cbrLatency = []
 
-# To get number of packets, separated by flow
-f1PacketCount = 0
-f2PacketCount = 0
-f3PacketCount = 0
+# Used for getting first iteration of events with the same "times"
+# Dictionary maps whether the loop has went through first list or not to time
+firstIteration = {}
 
-def getTime(event) :
+i = 0
+# The outputs only go up to 10 seconds
+while (i < 10):
+    firstIteration[i] = True
+    i += 0.5
+previousInterval = 0
+
+def getTime(event, k) :
     packetId = event[PKT_ID]
     receiveTime = float(event[TIME])
     sendTime = 0.0
 
     # Uses nested loop to get total time for all packets
     # This is necessary because multiple packets' sending and receiving times overlap with one another
-    j = i
+    j = k
     while j > 0:
         pastEvent = re.split('\s', outputs[j])
         if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
@@ -57,35 +59,45 @@ def getTime(event) :
 
 i = 0
 while i < len(outputs):
-    event = re.split('\s', outputs[i])
+    eventCheck = re.split('\s', outputs[i])
+    time = float(eventCheck[TIME])
 
-    if (event[FLOW_ID] == '1'):
-        # Don't count dropped packets to account for round trip time
-        if (event[EVENT] == 'd'):
-            f1DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
-            f1SumTime += getTime(event)
-            f1PacketCount += 1
-    elif (event[FLOW_ID] == '2'):
-        if (event[EVENT] == 'd'):
-            f2DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
-            f2SumTime += getTime(event)
-            f2PacketCount += 1
-    elif (event[FLOW_ID] == '3'):
-        if (event[EVENT] == 'd'):
-            f3DroppedPackets += 1
-        elif (event[EVENT] == 'r'):
-            f3SumTime += getTime(event)
-            f3PacketCount += 1
-    else:
-        print "There are more than the allowed number of flows for experiment 2."
-        exit()
+    if float(eventCheck[TIME]) > 0.4 and 0 <= time % 0.5 < 0.001:
+        index = time - time % 0.5
+        if firstIteration[index] == True:
+            tcpSumTime = 0.0
+            tcpPacketCount = 0
+
+            cbrSumTime = 0.0
+            cbrPacketCount = 0
+
+            # gets events from previous half-second interval to current
+            k = previousInterval
+            while k < i:
+                event = re.split('\s', outputs[k])
+                if (event[FLOW_ID] == '1'):
+                    if (event[EVENT] == 'r'):
+                        tcpSumTime += getTime(event, k)
+                        tcpPacketCount += 1
+                else:
+                    if (event[EVENT] == 'r'):
+                        cbrSumTime += getTime(event, k)
+                        cbrPacketCount += 1
+                k += 1
+            # Each throughput put in a list, in Kbps
+            # Check that time isn't zero so that it doesn't get the first seconds where only TCP runs
+            if tcpPacketCount != 0:
+                tcpLatency.append(tcpSumTime / tcpPacketCount * 2 * 1000)
+            if cbrPacketCount != 0:
+                cbrLatency.append(cbrSumTime / cbrPacketCount * 2 * 1000)
+            previousInterval = i
+            firstIteration[index] = False
     i += 1
 
 # Round trip time, in milliseconds
-# Displayed as flow 1, flow 2, then flow 3
-f1Latency = f1SumTime / f1PacketCount * 2 * 1000
-f2Latency = f2SumTime / f2PacketCount * 2 * 1000
-f3Latency = f3SumTime / f3PacketCount * 2 * 1000
-print f1Latency, f2Latency, f3Latency
+# Displayed as TCP then CBR
+for t in tcpLatency:
+    print t
+print "\n\n"
+for t in cbrLatency:
+    print t

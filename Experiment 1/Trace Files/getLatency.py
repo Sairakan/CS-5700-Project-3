@@ -28,7 +28,6 @@ outputs = [output for output in args.tracefile.read().splitlines()]
 i = 0
 
 sumTime = 0.0
-droppedPackets = 0
 numPackets = 0
 
 while i < len(outputs):
@@ -36,11 +35,7 @@ while i < len(outputs):
 
     # Only count tcp flow
     if (event[FLOW_ID] == '1'):
-        # Don't count dropped packets to account for round trip time
-        if (event[EVENT] == 'd'):
-            droppedPackets += 1
-
-        elif (event[EVENT] == 'r'):
+        if (event[EVENT] == 'r'):
             numPackets += 1
             packetId = event[PKT_ID]
             receiveTime = float(event[TIME])

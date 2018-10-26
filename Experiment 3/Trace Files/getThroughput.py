@@ -1,4 +1,4 @@
-import os, sys, re, argparse, itertools
+import os, sys, re, argparse
 
 argp = argparse.ArgumentParser()
 argp.add_argument('tracefile',
@@ -79,19 +79,19 @@ while i < len(outputs):
                 event = re.split('\s', outputs[k])
                 if event[EVENT] == 'r':
                     if (event[FLOW_ID] == '1'):
-                        packetSizeAndTime = getPacketSizeAndTime(event,k)
+                        packetSizeAndTime = getPacketSizeAndTime(event, k)
                         tcpIntervalSumPacketSize += packetSizeAndTime[0]
                         tcpIntervalSumTime += packetSizeAndTime[1]
                     else:
-                        packetSizeAndTime = getPacketSizeAndTime(event,k)
+                        packetSizeAndTime = getPacketSizeAndTime(event, k)
                         cbrIntervalSumPacketSize += packetSizeAndTime[0]
                         cbrIntervalSumTime += packetSizeAndTime[1]
                 k +=1
-            # Each throughput in a list, in Kbps
+            # Each throughput put in a list, in Kbps
+            # Check that time isn't zero so that it doesn't get the first seconds where only TCP runs
             if tcpIntervalSumTime != 0:
                 tcpThroughput.append(tcpIntervalSumPacketSize/tcpIntervalSumTime*8/1000)
 
-            # Check that time isn't zero so that it doesn't get the first seconds where only TCP runs
             if cbrIntervalSumTime != 0:
                 cbrThroughput.append(cbrIntervalSumPacketSize/cbrIntervalSumTime*8/1000)
 
