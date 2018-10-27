@@ -35,7 +35,7 @@ f1PacketCount = 0
 f2PacketCount = 0
 f3PacketCount = 0
 
-def getTime(event) :
+def getTime(event, fromNode) :
     packetId = event[PKT_ID]
     receiveTime = float(event[TIME])
     sendTime = 0.0
@@ -45,7 +45,7 @@ def getTime(event) :
     j = i
     while j > 0:
         pastEvent = re.split('\s', outputs[j])
-        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+' and pastEvent[FROM_NODE] == fromNode:
                 sendTime = float(pastEvent[TIME])
                 break
         j -= 1
@@ -56,21 +56,18 @@ i = 0
 while i < len(outputs):
     event = re.split('\s', outputs[i])
 
-    if (event[FLOW_ID] == '1'):
+    if (event[FLOW_ID] == '1' and event[TO_NODE] == '3'):
         if (event[EVENT] == 'r'):
-            f1SumTime += getTime(event)
+            f1SumTime += getTime(event, '0')
             f1PacketCount += 1
-    elif (event[FLOW_ID] == '2'):
+    elif (event[FLOW_ID] == '2' and event[TO_NODE] == '5'):
         if (event[EVENT] == 'r'):
-            f2SumTime += getTime(event)
+            f2SumTime += getTime(event, '4')
             f2PacketCount += 1
-    elif (event[FLOW_ID] == '3'):
+    elif (event[FLOW_ID] == '3' and event[TO_NODE] == '2'):
         if (event[EVENT] == 'r'):
-            f3SumTime += getTime(event)
+            f3SumTime += getTime(event, '1')
             f3PacketCount += 1
-    else:
-        print "There are more than the allowed number of flows for experiment 2."
-        exit()
     i += 1
 
 # Round trip time, in milliseconds
@@ -78,4 +75,4 @@ while i < len(outputs):
 f1Latency = f1SumTime / f1PacketCount * 2 * 1000
 f2Latency = f2SumTime / f2PacketCount * 2 * 1000
 f3Latency = f3SumTime / f3PacketCount * 2 * 1000
-print f1Latency, f2Latency, f3Latency
+print f1Latency,'\t',f2Latency,'\t',f3Latency
