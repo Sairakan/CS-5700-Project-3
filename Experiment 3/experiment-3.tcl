@@ -78,7 +78,7 @@ $cbr set random_ true
 
 #Schedule events for the CBR and FTP agents
 $ns at 0.1 "$ftp start"
-$ns at 1.0 "$cbr start"
+$ns at 5.0 "$cbr start"
 $ns at 9.0 "$ftp stop"
 $ns at 9.5 "$cbr stop"
 
