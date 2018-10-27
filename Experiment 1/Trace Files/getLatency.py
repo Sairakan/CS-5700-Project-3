@@ -34,8 +34,7 @@ while i < len(outputs):
     event = re.split('\s', outputs[i])
 
     # Only count tcp flow
-    if (event[FLOW_ID] == '1'):
-        if (event[EVENT] == 'r'):
+    if (event[FLOW_ID] == '1' and event[EVENT] == 'r' and event[TO_NODE] == '3'):
             numPackets += 1
             packetId = event[PKT_ID]
             receiveTime = float(event[TIME])
@@ -46,7 +45,7 @@ while i < len(outputs):
             j = i
             while j > 0:
                 pastEvent = re.split('\s', outputs[j])
-                if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+                if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+' and pastEvent[FROM_NODE] == '0':
                         sendTime = float(pastEvent[TIME])
                         break
                 j -= 1
