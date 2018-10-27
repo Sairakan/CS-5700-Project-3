@@ -28,7 +28,7 @@ timeSum = 0.0
 i = 0
 while i < len(outputs):
     event = re.split('\s', outputs[i])
-    if (event[EVENT] == 'r' and event[FLOW_ID] == '1'):
+    if (event[EVENT] == 'r' and event[FLOW_ID] == '1' and event[TO_NODE] == '3'):
         # Gets sum of packet size for throughput calculation later
         packetSize = float(event[PKT_SIZE])
         packetSizeSum += packetSize
@@ -42,7 +42,7 @@ while i < len(outputs):
         j = i
         while j > 0:
             pastEvent = re.split('\s', outputs[j])
-            if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+            if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+' and pastEvent[FROM_NODE] == '0':
                     sendTime = float(pastEvent[TIME])
                     break
             j -= 1

@@ -40,7 +40,7 @@ while (i < 10):
     i += 0.5
 previousInterval = 0
 
-def getTime(event, k) :
+def getTime(event, k, fromNode) :
     packetId = event[PKT_ID]
     receiveTime = float(event[TIME])
     sendTime = 0.0
@@ -50,7 +50,7 @@ def getTime(event, k) :
     j = k
     while j > 0:
         pastEvent = re.split('\s', outputs[j])
-        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+' and pastEvent[FROM_NODE] == fromNode:
                 sendTime = float(pastEvent[TIME])
                 break
         j -= 1
@@ -75,13 +75,14 @@ while i < len(outputs):
             k = previousInterval
             while k < i:
                 event = re.split('\s', outputs[k])
-                if (event[FLOW_ID] == '1'):
-                    if (event[EVENT] == 'r'):
-                        tcpSumTime += getTime(event, k)
-                        tcpPacketCount += 1
+                if event[EVENT] == 'r':
+                    if event[FLOW_ID] == '1':
+                        if event[TO_NODE] == '3':
+                            tcpSumTime += getTime(event, k, '0')
+                            tcpPacketCount += 1
                 else:
-                    if (event[EVENT] == 'r'):
-                        cbrSumTime += getTime(event, k)
+                    if event[TO_NODE] == '5':
+                        cbrSumTime += getTime(event, k, '4')
                         cbrPacketCount += 1
                 k += 1
             # Each throughput put in a list, in Kbps

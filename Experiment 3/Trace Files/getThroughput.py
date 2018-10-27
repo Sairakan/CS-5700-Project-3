@@ -23,7 +23,7 @@ PKT_ID      = 11
 
 outputs = [output for output in args.tracefile.read().splitlines()]
 
-def getPacketSizeAndTime (event, k):
+def getPacketSizeAndTime (event, k, fromNode):
     # Gets sum of packet size for throughput calculation later
     packetSize = float(event[PKT_SIZE])
 
@@ -36,7 +36,7 @@ def getPacketSizeAndTime (event, k):
     j = k
     while j > 0:
         pastEvent = re.split('\s', outputs[j])
-        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+':
+        if pastEvent[PKT_ID] == packetId and pastEvent[EVENT] == '+' and pastEvent[FROM_NODE] == fromNode:
                 sendTime = float(pastEvent[TIME])
                 break
         j -= 1
@@ -78,14 +78,16 @@ while i < len(outputs):
             while k < i:
                 event = re.split('\s', outputs[k])
                 if event[EVENT] == 'r':
-                    if (event[FLOW_ID] == '1'):
-                        packetSizeAndTime = getPacketSizeAndTime(event, k)
-                        tcpIntervalSumPacketSize += packetSizeAndTime[0]
-                        tcpIntervalSumTime += packetSizeAndTime[1]
+                    if event[FLOW_ID] == '1':
+                        if event[TO_NODE] == '3':
+                            packetSizeAndTime = getPacketSizeAndTime(event, k, '0')
+                            tcpIntervalSumPacketSize += packetSizeAndTime[0]
+                            tcpIntervalSumTime += packetSizeAndTime[1]
                     else:
-                        packetSizeAndTime = getPacketSizeAndTime(event, k)
-                        cbrIntervalSumPacketSize += packetSizeAndTime[0]
-                        cbrIntervalSumTime += packetSizeAndTime[1]
+                        if event[TO_NODE] == '5':
+                            packetSizeAndTime = getPacketSizeAndTime(event, k ,'4')
+                            cbrIntervalSumPacketSize += packetSizeAndTime[0]
+                            cbrIntervalSumTime += packetSizeAndTime[1]
                 k +=1
             # Each throughput put in a list, in Kbps
             # Check that time isn't zero so that it doesn't get the first seconds where only TCP runs
