@@ -1,0 +1,7 @@
+Seung Son: 001894138
+
+Jason Teng: 001876580
+
+Jason Teng worked on _______
+
+Seung Son worked on the Python code that would parse and interpret the NS-2 trace files, as well as the plotting of this parsed data. Much of the problems with the parsing of the trace files came with failure to understand the structure of the trace files, even with resources. For instance, it was only after several days that it was noticed that the "Time" field in the NS-2 trace file does not show how long each event took, but are rather timestamps. This made implementation have to be rewritten several times. Furthermore, it took some time before the realization that due to the time overlaps in packet transit, it was not enough to take the last timestamp in the outputs to get the total time of the packets' lifecycle. This ended up forcing the code to have an exponential runtime to calculate the sum of each packet's time taken in transit.
